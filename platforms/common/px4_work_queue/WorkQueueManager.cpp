@@ -264,6 +264,14 @@ WorkQueueManagerRun(int, char **)
 			}
 
 #ifndef __PX4_QURT
+
+			// take scheduling attributes from the values specified by the attributes object
+			int ret_setinheritsched = pthread_attr_setinheritsched(&attr, PTHREAD_EXPLICIT_SCHED);
+
+			if (ret_setinheritsched != 0) {
+				PX4_ERR("failed to set inherit-scheduler attribute PTHREAD_EXPLICIT_SCHED (%i)", ret_setinheritsched);
+			}
+
 			// schedule policy FIFO
 
 #if defined(ENABLE_LOCKSTEP_SCHEDULER)
